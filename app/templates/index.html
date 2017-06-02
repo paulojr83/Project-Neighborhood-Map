@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <meta charset="utf-8">
+      <title>Project Neighborhood Map</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/bootstrap.css') }}">
+      <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/bootstrap.css.map') }}">
+      <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+      <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/bootstrap.min.css.map') }}">
+      <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/style.css') }}">
+
+  </head>
+  <body>
+
+  
+<div class="container">
+  <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
+    <a class="navbar-brand" href="#">Neighborhood Map</a>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <button class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">New Address</button>
+        </li>      
+      </ul>      
+    </div>
+  </nav>
+
+  <div class="d-flex justify-content">
+    <div class="w-25 p-3">      
+      <input class="form-control mr-sm-2" type="text" placeholder="Search..." data-bind="textInput: filter">
+      <ul class="list-group" data-bind="foreach: filteredItems, visible: filteredItems().length > 0">
+        <!-- <li class="list-group-item"><span data-bind="text: title"></span> || <span data-bind="text: description"></span></li> -->
+        <span data-bind="text: $data"></span>
+      </ul>
+    </div>
+    <div class="w-75 p-3">
+      <div id="map"></div>
+      <input data-bind="value: Lat" placeholder="What's the Lat?"/>
+      <input data-bind="value: Lng" placeholder="What's the Lng?"/>
+      <div data-bind="latitude: viewModel.Lat, longitude:viewModel.Lng, map:map" ></div>
+    </div>    
+  </div>
+
+
+
+  <div class="card" style="width: 20rem;">  
+    <div class="card-block">
+      <h4 class="card-title">Card title</h4>
+      <p class="card-text">
+        <form data-bind="submit: addTask">
+          
+          <div class="form-group row">
+            <label for="example-text-input" class="col-2 col-form-label">Text</label>
+            <div class="col-10">
+              <input class="form-control" type="text" value="Artisanal kale" id="example-text-input" data-bind="value: newTaskTitle">
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="example-text-input" class="col-2 col-form-label">Text</label>
+            <div class="col-10">
+              <input class="form-control" type="text" value="Artisanal kale" id="example-text-input" data-bind="value: newTaskDesc">
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Add Task</button>
+        </form>    
+    </div>
+  </div>
+
+
+  
+</div>
+  <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/knockout-3.4.2.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCdqkttXHFtZLwrNlI_uwSyYofpNRLMsJ0"> </script>
+  
+</body>
+</html>

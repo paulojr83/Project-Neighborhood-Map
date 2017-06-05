@@ -2,6 +2,8 @@
 var map;
 var tasks;
 
+
+
 var contentString = '<div class="card">'+
     '<div class="card-header">'+
     '    Edit category'+
@@ -13,90 +15,115 @@ var contentString = '<div class="card">'+
 	'</div>';
 
 
-
 $(document).ready(function () {    
-   createMap();  
+   initMap(); 
    //setMarkers(map);
-   ko.applyBindings(viewModel);
+   
+   ko.applyBindings(viewModel);   
 });
 
-function Task(data) {
-    this.id = ko.observable(data.id);
-    this.title = ko.observable(data.title);
+function Neighborhood(data) {
+    this.id          = ko.observable(data.id);
+    this.name        = ko.observable(data.name);
     this.description = ko.observable(data.description);
+    this.lat         = ko.observable(data.lat);
+    this.lng         = ko.observable(data.lng);
 }
 
 function TaskListViewModel() {
-	var self = this;    
-	self.Lat = ko.observable(12.24);
-    self.Lng = ko.observable(24.54);
-	
+	var self = this;    		
 	self.filter = ko.observable('');
-
-    self.currentFilter = ko.observable(); // property to store the filter
-
-    self.tasks = ko.observableArray([]);
-    self.newTaskTitle = ko.observable();
-    self.newTaskDesc = ko.observable();
+    
+	self.neighborhoods = ko.observableArray([]);
+    self.itemsFilter = ko.observableArray([]);
+    
+    self.name = ko.observable();
+    self.description = ko.observable();
+    self.lat = ko.observable();
+    self.lng = ko.observable();
 
     self.addTask = function() {
-	self.save();
-	self.newTaskTitle("");
-	self.newTaskDesc("");
+	    self.save();	    
+        self.name("");
+        self.description("");
+        self.lat("");
+        self.lng("");
     };
-
-    $.getJSON('/tasks', function(model) {
-	var t = $.map(model.tasks, 
-		function(item) {
-	    return new Task(item);
-	});
-	self.tasks(t);		
-		setMarkers(map, model.tasks);
-    });	
-	
-	self.items = ko.observableArray(["apples", "apple pie", "apple sauce", "pumpkin pie", "peaches"]);
+    
+	$.getJSON( "/neighborhoods", function(data) {           
+        var neighborhoods = $.map(data.neighborhoods, function(neighborhood) {
+	        return new Neighborhood(neighborhood);
+	    });                   
+        self.neighborhoods(neighborhoods);
+        console.log( "success" );
+    })
+    .done(function() {                        
+        console.log( "second success");
+    })
+    .fail(function() {
+        console.log( "error" );
+    })    
+    .always(function() {        
+        setMarkers(map, self.neighborhoods());
+        console.log( "complete" );
+    });
   
 	
-	self.filteredItems = ko.computed(function() {
-		var filter = self.filter();
-		if (!filter) { 
-			return self.items(); 
-		}
-		return self.items().filter(function(i) { return i.indexOf(filter) > -1; });
-	});
+	self.filteredItems = ko.computed(function () {
+        var filter = self.filter();        
+        if (!filter) {
+            return self.neighborhoods();
+        } else {           
+            self.itemsFilter = ko.utils.arrayFilter(self.neighborhoods(), function(item, index) {                 
+                var neighborhood = item.name().toString().toUpperCase().replace(/[&\/\\#,+()$~%.'":*?<>{}]/g, '');                
+                return neighborhood.indexOf(filter.toUpperCase()) > -1;
+            });  
+            setMarkers(map, self.itemsFilter);
+            return self.itemsFilter;
+        }
 
+    });
     self.save = function() {
 	return $.ajax({
-	    url: '/tasks/new',
+	    url: '/neighborhood/new',
 	    contentType: 'application/json',
 	    type: 'POST',
 	    data: JSON.stringify({
-		'title': self.newTaskTitle(),
-		'description': self.newTaskDesc()
+		'name': self.name(),
+        'description': self.description(),
+        'lat': self.lat(),
+		'lng': self.lng()
 	    }),
 	    success: function(data) {
 		console.log("Pushing to tasks array");
-		var task = new Task({ title: data.title, description: data.description, id: data.id});
-		self.tasks.push(task);
-		setMarker(map, task);
+            var neighborhood = new Neighborhood({ name: data.name, description: data.description, lat:data.lat, lng:data.lng, id: data.id});
+            self.neighborhoods.push(neighborhood);
+		    //setMarker(map, task);
 		return;
 	    },
 	    error: function() {
-		return console.log("Failed");
+		    return console.log("Failed");
 	    }
 	});
 	
     };
 }
 
- function createMap(){    
-    var elevator;
-	var position ={lat: 12.24, lng: 24.54};	
-    
+function initMap(){        
+	map = new google.maps.Map($('#map')[0], {
+          zoom: 10,
+          center: {lat: -23.550520, lng: -46.633309}
+    });   
+}
+
+ function createMap(neighborhood){    
+    var position ={lat: parseInt(neighborhood.lat), lng: parseInt(neighborhood.lng)}; 
+    console.log(position);
+    var elevator;    
 	map = new google.maps.Map($('#map')[0], {
           zoom: 10,
           center: position
-        });
+    });
 	
 	var infowindow = new google.maps.InfoWindow({content: contentString});
 	var marker = new google.maps.Marker({
@@ -107,7 +134,7 @@ function TaskListViewModel() {
 	marker.addListener('click', function() {
 		infowindow.open(map, marker);
 	});
-    //map = new google.maps.Map($('#map')[0], myOptions);		
+   
 }
 
 ko.bindingHandlers.map = {
@@ -129,33 +156,14 @@ ko.bindingHandlers.map = {
 };
 
 // Adds marker to the map.
-function setMarkers(map, tasks) {	
-  var image = {
-    url: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
-    // This marker is 20 pixels wide by 32 pixels high.
-    size: new google.maps.Size(20, 32),
-
-    // The origin for this image is (0, 0).
-    origin: new google.maps.Point(0, 0),
-
-    // The anchor for this image is the base of the flagpole at (0, 32).
-    anchor: new google.maps.Point(0, 32)
-  };
-  
-  var shape = {
-    coords: [1, 1, 1, 20, 18, 20, 18, 1],
-    type: 'poly'
-  };
-  for (var i = 0; i < tasks.length; i++) {
-	var task = tasks[i];
-	var position ={lat: task.description, lng: task.title};	
-
+function setMarkers(map, neighborhoods) {	  
+  for (var i = 0; i < neighborhoods.length; i++) {    
+	var neighborhood = neighborhoods[i];
+	var position ={lat: parseInt(neighborhood.lat), lng: parseInt(neighborhood.lng)};   
 	var infowindow = new google.maps.InfoWindow({content: contentString});
 	var marker = new google.maps.Marker({
       position: position,
-      map: map,
-      icon: image,
-      shape: shape,
+      map: map,      
 	  zoom: 10
       //title: task.title
     });
@@ -167,30 +175,12 @@ function setMarkers(map, tasks) {
 }
 
 // Adds markers to the map.
-function setMarker(map, task) {	
-  var image = {
-    url: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
-    // This marker is 20 pixels wide by 32 pixels high.
-    size: new google.maps.Size(20, 32),
-    // The origin for this image is (0, 0).
-    origin: new google.maps.Point(0, 0),
-    // The anchor for this image is the base of the flagpole at (0, 32).
-    anchor: new google.maps.Point(0, 32)
-  };	
-	var shape = {
-		coords: [1, 1, 1, 20, 18, 20, 18, 1],
-		type: 'poly'
-	};
-  
-	var position ={lat: task.description, lng: task.title};
-
+function setMarker(map, neighborhood) {	
+	var position ={lat: parseInt(neighborhood.lat), lng: parseInt(neighborhood.lng)};   
 	var infowindow = new google.maps.InfoWindow({content: contentString});
-
     var marker = new google.maps.Marker({
       position: position,
       map: map,
-      icon: image,
-      shape: shape,
 	  zoom: 10
       //title: task.title
     });  

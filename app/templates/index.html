@@ -15,24 +15,15 @@
 
   
 <div class="container">
-  <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
+  <nav class="navbar navbar-toggleable-md navbar-light bg-faded" style="background-color: #e3f2fd;">
     <a class="navbar-brand" href="#">Neighborhood Map</a>
-
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#largeShoes">New Address</button>
-        </li>      
-      </ul>      
-    </div>
   </nav>
 
   <div class="d-flex justify-content">
     <div class="w-25 p-3">      
       <input class="form-control mr-sm-2" type="text" placeholder="Search..." data-bind="textInput: filter">
-      <ul class="list-group" data-bind="foreach: filteredItems, visible: filteredItems().length > 0">
-        <!-- <li class="list-group-item"><span data-bind="text: title"></span> || <span data-bind="text: description"></span></li> -->
-        <span data-bind="text: name"></span>
+      <ul class="list-group" data-bind="foreach: filteredItems, visible: filteredItems().length > 0">        
+        <a href="#" data-bind="click: $parent.showPlace"><span data-bind="text: name"></span></a>        
       </ul>
     </div>
     <div class="w-75 p-3">
@@ -42,41 +33,45 @@
 
 
 
-  <div class="card" style="width: 20rem;">  
+  <div class="card" >  
     <div class="card-block">
-      <h4 class="card-title">Card title</h4>
+      <div class="card-title"> 
+        <form data-bind="submit: findPlace">
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search for..."  data-bind="value: address">
+            <span class="input-group-btn">
+              <button class=" btn btn-outline-success my-2 my-sm-0" type="submit">Go!</button>
+            </span>
+          </div>
+          <div data-bind="latitude: viewModel.lat, longitude:viewModel.lng, map:map" ></div>
+         </form>
+
+      </div>
       <p class="card-text">
-        <form data-bind="submit: addTask">
-          
+
+        <form data-bind="submit: addAddress">
           <div class="form-group row">
-            <label for="example-text-input" class="col-2 col-form-label">Name neighborhood</label>
+            <label for="example-text-input" class="col-2 col-form-label">Place</label>
             <div class="col-10">
-              <input class="form-control" type="text" id="example-text-input" data-bind="value: name">
+              <input class="form-control" type="text" data-bind="value: name" readonly>
             </div>
-          </div>           
-          
+          </div>
+
           <div class="form-group row">
             <label for="example-text-input" class="col-2 col-form-label">Description</label>
-            <div class="col-10">
-              <input class="form-control" type="text" id="example-text-input" data-bind="value: description">
+            <div class="col-10">              
+              <textarea class="form-control"  rows="3" data-bind="value: description"></textarea>
             </div>
           </div>
 
           <div class="form-group row">
-            <label for="example-text-input" class="col-2 col-form-label">Text</label>
+            <label for="example-text-input" class="col-2 col-form-label">Location</label>
             <div class="col-10">
-              <input class="form-control" type="text" id="example-text-input" data-bind="value: lat">
+              <input class="form-control" type="text" data-bind="value: lat" readonly>
+              <input class="form-control" type="text" data-bind="value: lng" readonly>
             </div>
-          </div>
-
-          <div class="form-group row">
-            <label for="example-text-input" class="col-2 col-form-label">Text</label>
-            <div class="col-10">
-              <input class="form-control" type="text"  id="example-text-input" data-bind="value: lng">
-            </div>
-          </div>
-
-          <button type="submit" class="btn btn-primary">Add Task</button>
+          </div>          
+          <button type="submit" class="btn btn-primary">Add new place</button>
         </form>    
     </div>
   </div>

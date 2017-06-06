@@ -35,7 +35,7 @@ def index():
 @app.route('/neighborhoods')
 def neighborhoods():
     db = get_db()   
-    cur = db.execute('select name, description, lat, lng from neighborhood order by id asc')
+    cur = db.execute('select name, description, lat, lng, place_id from neighborhood order by id asc')
     entries = [dict(name=row[0], description=row[1], lat=row[2], lng=row[3]) for row in cur.fetchall()]
     print entries
     return jsonify(neighborhoods=entries)
@@ -43,8 +43,8 @@ def neighborhoods():
 @app.route('/neighborhood/new', methods=['POST'])
 def new_neighborhood():
     db = get_db()
-    cur = db.execute('insert into neighborhood (name, description, lat, lng) values (?, ?, ?, ?)',
-               [request.json['name'], request.json['description'], request.json['lat'], request.json['lng']])
+    cur = db.execute('insert into neighborhood (name, description, lat, lng, place_id) values (?, ?, ?, ?, ?)',
+               [request.json['name'], request.json['description'], request.json['lat'], request.json['lng'], request.json['place_id']])
     db.commit()
     id = cur.lastrowid
     print id
@@ -52,6 +52,7 @@ def new_neighborhood():
                     "description": request.json['description'],
                     "lat": request.json['lat'],
                     "lng": request.json['lng'],
+                    "place_id":request.json['place_id'],
                     "id": id})
 
 if __name__ == '__main__':

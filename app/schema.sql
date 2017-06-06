@@ -4,5 +4,6 @@ create table neighborhood (
   name string not null,
   description string not null,
   lat integer not null,
-  lng integer not null
+  lng integer not null,
+  place_id string not null
 );

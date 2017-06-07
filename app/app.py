@@ -36,8 +36,7 @@ def index():
 def neighborhoods():
     db = get_db()   
     cur = db.execute('select name, description, lat, lng, place_id from neighborhood order by id asc')
-    entries = [dict(name=row[0], description=row[1], lat=row[2], lng=row[3], 
-    place_id=row[4]) for row in cur.fetchall()]      
+    entries = [dict(name=row[0], description=row[1], lat=row[2], lng=row[3], place_id=row[4]) for row in cur.fetchall()]      
     return jsonify(neighborhoods=entries)
 
 @app.route('/neighborhood/new', methods=['POST'])

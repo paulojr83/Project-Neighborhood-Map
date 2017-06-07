@@ -1,4 +1,4 @@
---drop table if exists neighborhood;
+drop table if exists neighborhood;
 create table neighborhood (
   id integer primary key autoincrement,
   name string not null,

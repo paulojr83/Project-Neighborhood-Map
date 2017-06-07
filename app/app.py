@@ -36,14 +36,16 @@ def index():
 def neighborhoods():
     db = get_db()   
     cur = db.execute('select name, description, lat, lng, place_id from neighborhood order by id asc')
-    entries = [dict(name=row[0], description=row[1], lat=row[2], lng=row[3], place_id=row[4]) for row in cur.fetchall()]      
+    entries = [dict(name=row[0], description=row[1], lat=row[2], lng=row[3], 
+    place_id=row[4]) for row in cur.fetchall()]      
     return jsonify(neighborhoods=entries)
 
 @app.route('/neighborhood/new', methods=['POST'])
 def new_neighborhood():    
     db = get_db()
     cur = db.execute('insert into neighborhood (name, description, lat, lng, place_id) values (?, ?, ?, ?, ?)',
-               [request.json['name'], request.json['description'], request.json['lat'], request.json['lng'], request.json['place_id']])
+               [request.json['name'], request.json['description'], request.json['lat'], 
+               request.json['lng'], request.json['place_id']])
     db.commit()
     id = cur.lastrowid    
     return jsonify({"name": request.json['name'],

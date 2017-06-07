@@ -6,7 +6,7 @@ var currInfowindow =false;
 var marker;
 var markers = [];
 var geocoder;
-
+var positions = [];    
 
 $(document).ready(function () {    
    initMap(); 
@@ -50,8 +50,7 @@ function TaskListViewModel() {
         self.filter("");
     };
     
-    self.findPlace = function(){
-        
+    self.findPlace = function(){        
         $.ajax({
             url : 'https://maps.googleapis.com/maps/api/geocode/json',
             type : 'GET',
@@ -119,7 +118,7 @@ function TaskListViewModel() {
     })
     .done(function() {                        
         setMarkers(map, self.neighborhoods());        
-        showListings([]);
+        showListings();
     })    
     .fail(function() {
         console.log( "error" );
@@ -127,17 +126,19 @@ function TaskListViewModel() {
  
     
 	self.filteredItems = ko.computed(function () {
-        var filter = self.filter();        
-        if (!filter) {                        
+        positions =[];
+        var filter = self.filter();            
+        if (!filter) {      
+                                 
             return self.neighborhoods();
         }else{
-            var positions = [];
+            
             self.itemsFilter = ko.utils.arrayFilter(self.neighborhoods(), function(item, index) {                 
                 var neighborhood = item.name().toString().toUpperCase().replace(/[&\/\\#,+()$~%.'":*?<>{}]/g, ''); 
                 positions.push({'place_id':item.place_id().toString()});
                 return neighborhood.indexOf(filter.toUpperCase()) > -1;
             }); 
-            showListings(positions);                        
+            showListings();                        
             return self.itemsFilter;                  
         }    
     });
@@ -156,7 +157,8 @@ function TaskListViewModel() {
             }),
             success: function(data) {
                 console.log("Pushing to tasks array");
-                var neighborhood = new Neighborhood({ id: data.id, name: data.name, description: data.description, lat:data.lat, lng:data.lng, place_id: data.place_id});
+                var neighborhood = new Neighborhood({ id: data.id, name: data.name, 
+                    description: data.description, lat:data.lat, lng:data.lng, place_id: data.place_id});
                 self.neighborhoods.push(neighborhood);
                 var position ={lat: parseFloat(data.lat), lng: parseFloat(data.lng)};                 
                 if(marker){
@@ -254,13 +256,12 @@ function initMap(){
 }
 
 // This function will loop through the markers array and display them all.
-function showListings(data) {
-    var positions =[];    
+function showListings() {    
     for (var i = 0; i < markers.length; i++) {          
           markers[i].setMap(null);
     }    
     
-    if(data.length == 0){
+    if(positions.length == 0){
         positions = viewModel.neighborhoods();
     }else{
         positions = viewModel.itemsFilter;

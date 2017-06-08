@@ -1,0 +1,177 @@
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+
+body {
+  line-height: 1.4; 
+}
+
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
+} 
+
+
+#map {   
+    max-height: 900px;
+    min-height: 500px;     
+    max-width: 900px; 
+    min-width: 100px;    
+}
+
+h1, 
+h2, 
+h3, 
+h4 {
+	font-family: "Gotham", sans-serif;
+	margin: 0;
+}
+
+h1 {
+	color:#2d3c49;
+	font-weight: 300;
+	font-size: 2em;
+}
+
+h2 {
+    color: #7d97ad;
+    font-weight: 300;
+    font-size: 2em;
+    margin-left: 20px;
+}
+
+.col-4 h2 {
+    text-align: center;
+    text-transform: uppercase;
+    color: #2d3c49;
+}
+
+.container {    
+    margin: 0 auto;
+    max-width: 950px;
+    min-width: 375px;
+}
+
+img {
+    width: 100%;    
+}
+
+figure {
+  margin: 1em 0 1em 0;
+}
+
+.title-profile {
+    margin-top: 10px;
+    text-align: right;
+    text-transform: uppercase;    
+}
+
+.a-link {
+    text-decoration: none;
+    color: #2d3c49;    
+}
+
+hr {
+    border-top: 4px solid #7d97ad;
+}
+
+.col-4 figure {
+    margin-right: 10px;
+}
+
+.logo {
+    width: 70px;
+    height: 70px;
+    margin: 10px;        
+}
+
+.row  {
+    width: 100%;    
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.col-1 {
+    width: 8.33%;
+}
+
+.col-2 {
+    width: 16.66%;
+}
+
+.col-3 {
+    width: 25%;
+}
+
+.col-4 {
+    width: 33.33%;
+}
+
+.col-5 {
+    width: 41.66%;
+}
+
+.col-6 {
+    width: 50%;
+}
+
+.col-7 {
+    width: 58.33%;
+}
+
+.col-8 {
+    width: 66.66%;
+}
+
+.col-9 {
+    width: 75%;
+}
+
+.col-10 {
+    width: 83.33%;
+}
+
+.col-11 {
+    width: 91.66%;
+}
+
+.col-12 {
+    width: 100%;
+}
+
+.first,
+.secunder,
+.third {
+    text-align: center;
+}
+
+@media screen and (max-width:375px) {
+    h1{
+        font-size: 1.5em;
+    }
+}

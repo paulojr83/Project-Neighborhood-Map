@@ -10,8 +10,7 @@ var positions = [];
 
 $(document).ready(function () {    
    initMap(); 
-   //setMarkers(map);
-   
+   //setMarkers(map);   
    ko.applyBindings(viewModel);   
 });
 
@@ -100,13 +99,26 @@ function TaskListViewModel() {
 
     self.showPlace = function(data) {          
         var position = {};
+        var place_id = '';
         ko.utils.arrayFilter(self.neighborhoods(), function(item) {
-            if(data == item){                
+            if(data == item){  
+                place_id =  item.place_id().toString();             
                 position = {lat: parseFloat(item.lat().toString()), lng: parseFloat(item.lng().toString())};                
                 return;
             }
         });              
-            
+
+        var bounds = new google.maps.LatLngBounds();
+        
+        for (var j = 0; j < markers.length; j++) {            
+                if(markers[j].id == place_id){                
+                    map.setZoom(15);       
+                    markers[j].setMap(map);
+                    bounds.extend(markers[j].position);
+               }
+        }
+        
+        map.fitBounds(bounds);    
         map.setCenter(position);        
     };
 
@@ -124,7 +136,11 @@ function TaskListViewModel() {
         console.log( "error" );
     });
  
-    
+    self.clearFilter = function(){
+        self.filter("");
+        self.filteredItems();
+    };
+
 	self.filteredItems = ko.computed(function () {
         positions =[];
         var filter = self.filter();            
@@ -326,5 +342,6 @@ function addMarker(position, map, name, description,_id) {
     });
     
 }
-   
+
+
 var viewModel = new TaskListViewModel();

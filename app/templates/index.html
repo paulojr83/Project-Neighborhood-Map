@@ -3,10 +3,17 @@
   <head>
       <meta charset="utf-8">
       <title>Project Neighborhood Map</title>
-      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">      
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">  
+      <!-- default styles  -->    
       <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/main.css') }}">
       <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/style.css') }}">      
       <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/input-search.css') }}">
+
+      <!--styles for mobile or/and browsers smaller than 550px -->
+      <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/main.550.css') }}"  media="screen and (max-width: 550px)" />
+      <!--styles for mobile  or/and browsers smaller than 700px -->
+      <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/main.css') }}" media="screen and (max-width: 700px)" />
+      
   </head>
 <body>
 
@@ -16,7 +23,15 @@
       <header class="row">  
         <div class="col-12">
           <div id="title">Neighborhood Map</div>        
-        </div>               
+          <form data-bind="submit: findPlace" >
+             <label>Place
+              <input type="text"   placeholder="Search for..."  data-bind="value: address, placeholder: missing" style="width: 50%;">
+              <button class="button search" type="submit">Go!</button>            
+            </label>  
+            <div data-bind="latitude: viewModel.lat, longitude:viewModel.lng, map:map" ></div>
+          </form>            
+        </div>   
+        
       </header>
       
       <div class="row">
@@ -25,14 +40,6 @@
         </div>
         
 			  <div class="col-6">
-          
-          <form data-bind="submit: findPlace" >
-             <label>Place
-              <input type="text"   placeholder="Search for..."  data-bind="value: address, placeholder: missing">            
-              <button style="cursor: pointer" type="submit">Go!</button>            
-            </label>  
-            <div data-bind="latitude: viewModel.lat, longitude:viewModel.lng, map:map" ></div>
-          </form>
 
           <form data-bind="submit: addAddress">
             <label>Name</label>         
@@ -41,14 +48,16 @@
             <label>Description</label>         
             <textarea  rows="3" data-bind="value: description" readonly></textarea>
 
-            <label>Location</label>            
-            <input type="text" data-bind="value: lat" readonly>
-            <input type="text" data-bind="value: lng" readonly>
+            <label class="hidden">Location
+              <input type="text" data-bind="value: lat" readonly>
+              <input type="text" data-bind="value: lng" readonly>
+            </label>            
 
-            <label>Place id</label>          
-            <input type="text" data-bind="value: place_id" readonly>
+            <label class="hidden">Place id
+              <input type="text" data-bind="value: place_id" readonly>
+            </label>
 
-            <button type="submit" class="btn btn-primary">Add new place</button>
+            <button type="submit" class="button save">Save</button>
           </form>
 			  </div>
 		  </div>

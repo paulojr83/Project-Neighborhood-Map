@@ -9,8 +9,7 @@ var geocoder;
 var positions = [];    
 
 $(document).ready(function () {    
-   initMap(); 
-   //setMarkers(map);   
+   initMap();     
    ko.applyBindings(viewModel);   
 });
 
@@ -39,6 +38,7 @@ function TaskListViewModel() {
     self.missing = ko.observable('missing');
     self.address = ko.observable('');
     
+    /** Call save address and clean variables */
     self.addAddress = function() {
         self.save();
         self.name("");
@@ -49,6 +49,7 @@ function TaskListViewModel() {
         self.filter("");
     };
     
+    /** Find all address saved */
     self.findPlace = function(){        
         $.ajax({
             url : 'https://maps.googleapis.com/maps/api/geocode/json',
@@ -98,6 +99,7 @@ function TaskListViewModel() {
         });      
     };
 
+    /** Show place that clicked */
     self.showPlace = function(data) {          
         var position = {};
         var place_id = '';
@@ -142,6 +144,7 @@ function TaskListViewModel() {
         self.filteredItems();
     };
 
+    /**Filter on list by name that place what you looking for */
 	self.filteredItems = ko.computed(function () {
         positions =[];
         var filter = self.filter();            
@@ -214,7 +217,9 @@ function showMakerFromFindPlace(address){
     });
 
     infoWindow = new google.maps.InfoWindow({
-        content: "<div class='place'>Drag this pin anywhere on the Google Map to know the approximate address of that point.</div>"
+        content: "<div class='card'>"+
+        "<p class='card-head'>Drag this pin anywhere on the Google Map to know the approximate address of that point.</p>"+
+        "</div>"
     });
     
     
@@ -240,13 +245,8 @@ function showMakerFromFindPlace(address){
             if (responses && responses.length > 0) {
                 infoWindow.setContent(
                     '<div class="card">'+
-                    '<div class="card-header">'+
-                    name +
-                    '</div>'+    
-                    '<div class="card-footer text-muted" style="display: inherit;">'+
-                    ' <p>'+ responses[0].formatted_address +
-                    '</div>'+
-                    '</form>'+
+                    ' <p class="card-head" >'+ name + '</p>'+
+                    ' <p>'+ responses[0].formatted_address+ '</p>'+ 
                     '</div>');
                 infoWindow.open(map, marker);
             } else {
@@ -321,15 +321,10 @@ function addMarker(position, map, name, description,_id) {
       animation: google.maps.Animation.DROP,	  
       id:_id
     });  
-    var contentString = '<div class="card">'+
-                    '<div class="card-header">'+
-                    name+
-                    '</div>'+    
-                    '<div class="card-footer text-muted" style="display: inherit;">'+
-                    ' <p>'+ description+
-                    '</div>'+
-                    '</form>'+
-                    '</div>';
+    var contentString = '<div class="card">'+    
+                        ' <p class="card-head" >'+ name + '</p>'+
+                        ' <p>'+ description+ '</p>'+
+                        '</div>';
     
     var infowindow = new google.maps.InfoWindow({content: contentString});
     

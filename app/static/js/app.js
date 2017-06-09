@@ -71,7 +71,8 @@ function TaskListViewModel() {
                         
                         for (var i=0; i < result.results[0].address_components.length; i++){
                             for (var f=0; f < result.results[0].address_components[i].types.length; f++){                                                    
-                                if(result.results[0].address_components[i].types[f] == 'locality' || result.results[0].address_components[i].types[f] =='route'){
+                                if(result.results[0].address_components[i].types[f] == 'locality' || 
+                                    result.results[0].address_components[i].types[f] =='route'){
                                     name = result.results[0].address_components[i].long_name;                                    
                                     break;
                                 }   
@@ -112,7 +113,7 @@ function TaskListViewModel() {
         
         for (var j = 0; j < markers.length; j++) {            
                 if(markers[j].id == place_id){                
-                    map.setZoom(15);       
+                    map.setZoom(8);       
                     markers[j].setMap(map);
                     bounds.extend(markers[j].position);
                }
@@ -199,7 +200,7 @@ function showMakerFromFindPlace(address){
     marker = new google.maps.Marker({
         position: address.location,
         //map: map,
-        zoom: 10,
+        zoom: 8,
         title: address.name,
         draggable: true
     });      
@@ -266,7 +267,7 @@ function showMakerFromFindPlace(address){
 
 function initMap(){        
 	map = new google.maps.Map($('#map')[0], {
-          zoom: 11,
+          zoom: 8,
           center: {lat: -23.550520, lng: -46.633309}
     });   
 }
@@ -286,14 +287,21 @@ function showListings() {
     for (var i=0; i < positions.length; i++){              
         // Extend the boundaries of the map for each marker and display the marker
         for (var j = 0; j < markers.length; j++) {            
-            if(markers[j].id == positions[i].place_id()){                
-                map.setZoom(15);       
+            if(markers[j].id == positions[i].place_id()){                                
                 markers[j].setMap(map);
                 bounds.extend(markers[j].position);
             }
         }
     }
-    map.fitBounds(bounds);
+
+    if ( positions.length > 1) {
+            map.fitBounds(bounds);
+            
+        }
+        else if (positions.length == 1) {
+        map.setCenter(bounds.getCenter());
+        map.setZoom(10);
+    }    
 }
 
 // Adds marker to the map.
@@ -310,8 +318,7 @@ function addMarker(position, map, name, description,_id) {
   var marker = new google.maps.Marker({
       position: position,
       map: map,
-      animation: google.maps.Animation.DROP,
-	  zoom: 8,
+      animation: google.maps.Animation.DROP,	  
       id:_id
     });  
     var contentString = '<div class="card">'+

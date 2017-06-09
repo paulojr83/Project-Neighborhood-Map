@@ -5,14 +5,10 @@
       <title>Project Neighborhood Map</title>
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">      
       <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/main.css') }}">
-      <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/style.css') }}">
-      
+      <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/style.css') }}">      
       <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/input-search.css') }}">
-
   </head>
-  <body>
-
-
+<body>
 
 <div id="page-wrapper">
     <div class="container">
@@ -20,8 +16,7 @@
       <header class="row">  
         <div class="col-12">
           <div id="title">Neighborhood Map</div>        
-        </div>      
-         
+        </div>               
       </header>
       
       <div class="row">
@@ -30,7 +25,6 @@
         </div>
         
 			  <div class="col-6">
-
           
           <form data-bind="submit: findPlace" >
              <label>Place
@@ -41,8 +35,8 @@
           </form>
 
           <form data-bind="submit: addAddress">
-            <label>Place</label>         
-            <input type="text" data-bind="value: name" readonly>
+            <label>Name</label>         
+            <input type="text" data-bind="value: name">
 
             <label>Description</label>         
             <textarea  rows="3" data-bind="value: description" readonly></textarea>
@@ -50,7 +44,6 @@
             <label>Location</label>            
             <input type="text" data-bind="value: lat" readonly>
             <input type="text" data-bind="value: lng" readonly>
-
 
             <label>Place id</label>          
             <input type="text" data-bind="value: place_id" readonly>
@@ -62,7 +55,6 @@
 
     </div>
 </div>
-
 
 <div id="btn">
 		<div id='top'></div>
@@ -82,18 +74,13 @@
       <div data-bind="foreach: filteredItems, visible: filteredItems().length > 0">
 			<div class="item" data-bind="click: $parent.showPlace"><span data-bind="text: name"></span></div>				
 		</div>
-
-</div>
-  
+</div>  
 
 </div>
   <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
   <script src="{{ url_for('static', filename='js/knockout-3.4.2.js') }}"></script>
   <script src="{{ url_for('static', filename='js/app.js') }}"></script>
   <script src="{{ url_for('static', filename='js/sidebar.js') }}"></script>
-
-
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCdqkttXHFtZLwrNlI_uwSyYofpNRLMsJ0"> </script>
-  
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCdqkttXHFtZLwrNlI_uwSyYofpNRLMsJ0"> </script>  
 </body>
 </html>

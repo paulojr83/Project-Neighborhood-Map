@@ -14,9 +14,8 @@
 
 #### The neighborhood Map
  Need some additional help getting started with the Neighborhood Map.
-1. Set up the environment database: in your terminal > python app.py 
  * For more information abou set up [Sqlalchemy](http://docs.sqlalchemy.org/en/latest/core/schema.html)
-2. Run the project: in your terminal > python catalog.py access => than [http://localhost:5000/](http://localhost:5000/)
+1. Run the project: in your terminal > python project-folder/app/app.py access => than [http://localhost:5000/](http://localhost:5000/)
  * [Flask Templates](http://flask.pocoo.org/)  
  * [Deploying a Flask App with Heroku](https://www.youtube.com/watch?v=pmRT8QQLIqk)
  

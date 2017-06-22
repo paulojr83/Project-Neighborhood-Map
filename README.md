@@ -7,18 +7,10 @@
 3. cd neighrhood\app
 4. python app.py
 
- Need some additional help getting started with the Neighborhood Map.
+#### For more information see:
 1. You need to set up Sqlalchemy for more information [see doc](http://docs.sqlalchemy.org/en/latest/core/schema.html)
-1. Run the project: in your terminal > python project-folder/app/app.py access => than [http://localhost:5000/](http://localhost:5000/)
- * [Flask Templates](http://flask.pocoo.org/)  
- * [Deploying a Flask App with Heroku](https://www.youtube.com/watch?v=pmRT8QQLIqk)
- 
-#### App Architecture
-Code is properly separated based upon Knockout's best practices.
-Knockout is a bit of a shift in thinking. If you don't know where to start go through [Knockouts Documentation](http://knockoutjs.com/documentation/introduction.html), which reads like a series of articles. Follow along and build some of the basic examples from Knockout and try to apply them to your project.
-
-Really think about the Model-View-ViewModel paradigm. Remember that Google Maps API handles the View and the Model you are mostly taking of the ViewModel component. You never really touch the HTML code that takes care of the View.
-
+2. [Flask Templates](http://flask.pocoo.org/)   
+3. [Knockoutjs](http://knockoutjs.com/documentation/introduction.html)
 
 #### Dependency
 In command line: 

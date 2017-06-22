@@ -8,26 +8,26 @@
 4. python app.py
 
 #### For more information see:
-1. You need to set up Sqlalchemy for more information [see doc](http://docs.sqlalchemy.org/en/latest/core/schema.html)
+1. [Sqlalchemy](http://docs.sqlalchemy.org/en/latest/core/schema.html)
 2. [Flask Templates](http://flask.pocoo.org/)   
 3. [Knockoutjs](http://knockoutjs.com/documentation/introduction.html)
 
 #### Dependency
 In command line: 
-pip install *
-* click
-* db
-* Flask
-* google
-* html5lib
-* httplib2
-* itsdangerous
-* Jinja2
-* requests
-* SQLAlchemy
-* webapp2
-* Werkzeug
-* wsgiref
+> pip install 
+> * click
+> * db
+> * Flask
+> * google
+> * html5lib
+> * httplib2
+> * itsdangerous
+> * Jinja2
+> * requests
+> * SQLAlchemy
+> * webapp2
+> * Werkzeug
+> * wsgiref
 
 
 #### First view of app

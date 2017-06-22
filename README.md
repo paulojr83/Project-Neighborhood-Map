@@ -21,6 +21,8 @@ Really think about the Model-View-ViewModel paradigm. Remember that Google Maps 
 
 
 #### Dependency
+In command line: 
+pip install *
 * click
 * db
 * Flask
@@ -29,10 +31,11 @@ Really think about the Model-View-ViewModel paradigm. Remember that Google Maps 
 * httplib2
 * itsdangerous
 * Jinja2
-* MarkupSafe
 * requests
 * SQLAlchemy
 * webapp2
+* Werkzeug
+* wsgiref
 
 
 #### First view of app

@@ -2,9 +2,10 @@
  The neighborhood map application is complex enough and incorporates a variety of data points that it can easily become unwieldy to manage. There are a number of frameworks, libraries and APIs available to make this process more manageable and many employers are looking for specific skills in using these packages.
 
 #### The neighborhood Map
-1. git clone https://github.com/paulojr83/Project-Neighborhood-Map.git neighrhood
-2. cd neighrhood\app
-3. python app.py
+1. You need [Python](https://www.python.org/downloads/), than install [pip](https://pip.pypa.io/en/stable/installing/).
+2. git clone https://github.com/paulojr83/Project-Neighborhood-Map.git neighrhood
+3. cd neighrhood\app
+4. python app.py
 
  Need some additional help getting started with the Neighborhood Map.
 1. You need to set up Sqlalchemy for more information [see doc](http://docs.sqlalchemy.org/en/latest/core/schema.html)
@@ -20,41 +21,18 @@ Really think about the Model-View-ViewModel paradigm. Remember that Google Maps 
 
 
 #### Dependency
-* antiorm
-* appdirs
-* bcrypt
-* beautifulsoup4
-* bleach
-* cffi
 * click
 * db
 * Flask
-* Flask-HTTPAuth
-* Flask-Login
 * google
 * html5lib
 * httplib2
 * itsdangerous
 * Jinja2
 * MarkupSafe
-* oauth2client
-* packaging
-* passlib
-* pipdeptree
-* psycopg2
-* pyasn1
-* pyasn1-modules
-* pycparser
-* pyparsing
-* redis
 * requests
-* rsa
-* six
 * SQLAlchemy
-* virtualenv
 * webapp2
-* webencodings
-* Werkzeug
 
 
 #### First view of app

@@ -15,19 +15,22 @@
 #### Dependency
 In command line: 
 > pip install 
-> * click
-> * db
-> * Flask
-> * google
-> * html5lib
-> * httplib2
-> * itsdangerous
-> * Jinja2
-> * requests
-> * SQLAlchemy
-> * webapp2
-> * Werkzeug
-> * wsgiref
+> click
+> db
+> Flask
+> google
+> html5lib
+> httplib2
+> itsdangerous
+> Jinja2
+> requests
+> SQLAlchemy
+> webapp2
+> Werkzeug
+> wsgiref
+> render_template
+> request, jsonify, _app_ctx_stack
+> sqlite3
 
 
 #### First view of app

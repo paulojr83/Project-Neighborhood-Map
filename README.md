@@ -2,8 +2,9 @@
  The neighborhood map application is complex enough and incorporates a variety of data points that it can easily become unwieldy to manage. There are a number of frameworks, libraries and APIs available to make this process more manageable and many employers are looking for specific skills in using these packages.
 
 #### The neighborhood Map
-1.0 => git clone https://github.com/paulojr83/Project-Neighborhood-Map.git neighrhood
-  1.1 => cd neighrhood
+1. git clone https://github.com/paulojr83/Project-Neighborhood-Map.git neighrhood
+2. cd neighrhood\app
+3. python app.py
 
  Need some additional help getting started with the Neighborhood Map.
 1. You need to set up Sqlalchemy for more information [see doc](http://docs.sqlalchemy.org/en/latest/core/schema.html)

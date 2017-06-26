@@ -183,9 +183,6 @@ label {
   will-change: transform, opacity;
 }
 
-
-
-
 input[type=text] {
     width: 100%;
     padding: 12px 20px;
@@ -219,4 +216,26 @@ input[type=submit] {
 
 input[type=submit]:hover {
     background-color: #45a049;
+}
+
+#venues {
+    direction: rtl;
+    z-index: 100;
+    position: absolute;
+    right: 1em;
+    top: 160px;
+    width: 400px;
+    height: 80%;
+    overflow-y:auto;
+    /*background-color:rgba(0,0,0,0.2);*/
+}
+
+.venue {
+	border:solid 1px #ccc;
+	padding:5px;
+	background-color:#fff;
+	margin-top:10px;
+	width:90%;
+	margin:10px auto 10px auto;
+	border-radius:10px;
 }

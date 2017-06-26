@@ -25,3 +25,9 @@ h4 {
 .third {
     width: 100%;
 }
+
+
+#venues {
+    width: 65%;
+    font-size: 1em;
+}

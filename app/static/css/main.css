@@ -185,3 +185,7 @@ hr {
 .card-header{
     font-size: 2.2em;
 }
+
+#venues {
+    right: 5em;
+}

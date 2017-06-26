@@ -17,79 +17,82 @@
   </head>
 <body>
 
-<div id="page-wrapper">
-    <div class="container">
-		  
-      <header class="row">  
-        <div class="col-12">
-          <div id="title">Neighborhood Map</div>        
-          <form data-bind="submit: findPlace" >
-             <label>Place
-              <input type="text"   placeholder="Search for..."  data-bind="value: address, placeholder: missing" style="width: 50%;">
-              <button class="button search" type="submit">Go!</button>            
-            </label>  
-            <div data-bind="latitude: viewModel.lat, longitude:viewModel.lng, map:map" ></div>
-          </form>            
-        </div>   
-        
-      </header>
-      
-      <div class="row">
-        <div class="col-12">
-          <div id="map"></div> 
+    <div id="page-wrapper">
+        <div class="container">
+
+          <header class="row">
+            <div class="col-12">
+              <div id="title">Neighborhood Map</div>
+              <form data-bind="submit: findPlace" >
+                 <label>Place
+                  <input type="text"   placeholder="Search for..."  data-bind="value: address, placeholder: missing" style="width: 50%;">
+                  <button class="button search" type="submit">Go!</button>
+                </label>
+                <div data-bind="latitude: viewModel.lat, longitude:viewModel.lng, map:map" ></div>
+              </form>
+            </div>
+
+          </header>
+
+          <div class="row">
+            <div class="col-12">
+              <div id="map"></div>
+            </div>
+
+                  <div class="col-6">
+
+              <form data-bind="submit: addAddress">
+                <label>Name</label>
+                <input type="text" data-bind="value: name">
+
+                <label>Description</label>
+                <textarea  rows="3" data-bind="value: description" readonly></textarea>
+
+                <label class="hidden">Location
+                  <input type="text" data-bind="value: lat" readonly>
+                  <input type="text" data-bind="value: lng" readonly>
+                </label>
+
+                <label class="hidden">Place id
+                  <input type="text" data-bind="value: place_id" readonly>
+                </label>
+
+                <button type="submit" class="button save">Save</button>
+              </form>
+                  </div>
+              </div>
+
         </div>
-        
-			  <div class="col-6">
+    </div>
 
-          <form data-bind="submit: addAddress">
-            <label>Name</label>         
-            <input type="text" data-bind="value: name">
+    <div id="btn">
+            <div id='top'></div>
+            <div id='middle'></div>
+            <div id='bottom'></div>
+    </div>
 
-            <label>Description</label>         
-            <textarea  rows="3" data-bind="value: description" readonly></textarea>
+    <div id="venues">
+    </div>
 
-            <label class="hidden">Location
-              <input type="text" data-bind="value: lat" readonly>
-              <input type="text" data-bind="value: lng" readonly>
-            </label>            
-
-            <label class="hidden">Place id
-              <input type="text" data-bind="value: place_id" readonly>
-            </label>
-
-            <button type="submit" class="button save">Save</button>
+    <div id="box" >
+        <div>
+          <h1 style="text-align: center;position: relative;top: 85px;">Search</h1>
+          <form class="inputbox">
+            <input required="required" data-bind="value: filter, valueUpdate: 'afterkeydown', showAllMarkersWhenClearFilter:filter"/>
+            <button class="del" data-bind="click: clearFilter"></button>
           </form>
-			  </div>
-		  </div>
-
+        </div>
+        <div id="items">
+          <div data-bind="foreach: filteredItems, visible: filteredItems().length > 0">
+              <div class="item" data-bind="click: $parent.showPlace"><span data-bind="text: name"></span></div>
+          </div>
+        </div>
     </div>
-</div>
 
-<div id="btn">
-		<div id='top'></div>
-		<div id='middle'></div>
-		<div id='bottom'></div>    
-</div>
-
-<div id="box">
-    <div>
-      <h1 style="text-align: center;position: relative;top: 85px;">Search</h1>
-      <form class="inputbox">
-        <input required="required" data-bind="value: filter, valueUpdate: 'afterkeydown'"/>
-        <button class="del" data-bind="click: clearFilter"></button>
-      </form>
-    </div>
-		<div id="items">            			
-      <div data-bind="foreach: filteredItems, visible: filteredItems().length > 0">
-			<div class="item" data-bind="click: $parent.showPlace"><span data-bind="text: name"></span></div>				
-		</div>
-</div>  
-
-</div>
   <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
   <script src="{{ url_for('static', filename='js/knockout-3.4.2.js') }}"></script>
   <script src="{{ url_for('static', filename='js/app.js') }}"></script>
   <script src="{{ url_for('static', filename='js/sidebar.js') }}"></script>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCdqkttXHFtZLwrNlI_uwSyYofpNRLMsJ0"> </script>  
+  <script async defer src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry&key=AIzaSyCdqkttXHFtZLwrNlI_uwSyYofpNRLMsJ0&callback=initApp"> </script>
 </body>
 </html>

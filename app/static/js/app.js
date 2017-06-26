@@ -7,11 +7,18 @@ var marker;
 var markers = [];
 var geocoder;
 var positions = [];    
+var appendeddatahtml = "";
+var newstr = "";
 
-$(document).ready(function () {    
-   initMap();     
+$(document).ready(function () {
+   navigator.geolocation.getCurrentPosition(getLocation);
    ko.applyBindings(viewModel);   
 });
+
+function getLocation(location) {
+    lat = location.coords.latitude;
+    lng = location.coords.longitude;
+}
 
 function Neighborhood(data) {
     this.id          = ko.observable(data.id);
@@ -37,7 +44,7 @@ function TaskListViewModel() {
     self.warning = ko.observable('d-flex justify-content has-warning');
     self.missing = ko.observable('missing');
     self.address = ko.observable('');
-    
+
     /** Call save address and clean variables */
     self.addAddress = function() {
         self.save();
@@ -50,17 +57,43 @@ function TaskListViewModel() {
     };
     
     /** Find all address saved */
-    self.findPlace = function(){        
+    self.findPlace = function(){
+
         $.ajax({
-            url : 'https://maps.googleapis.com/maps/api/geocode/json',
             type : 'GET',
-            data : {
-                address : self.address(),
-                sensor : false
-            },
-            async : false,
+            url: "https://api.foursquare.com/v2/venues/explore?ll="+lat+","+lng+"&oauth_token=20RNUANVYKUONUGZKDGTUCXLV4LZEFPH5FPHN4X3HVMYOKKG&v=20170626&query="+self.address()+"",
             success : function(result) {
-                
+                $("#venues").show();
+                var dataobj = result.response.groups[0].items;
+                $("#venues").html("");
+
+
+                $.each( dataobj, function() {
+					if (this.venue.categories[0]) {
+						str = this.venue.categories[0].icon.prefix;
+						newstr = str.substring(0, str.length - 1);
+						icon = newstr+this.venue.categories[0].icon.suffix;
+					} else {
+						icon = "";
+					}
+
+					if (this.venue.location.address) {
+						address = '<p class="subinfo">'+this.venue.location.address+'<br>';
+					} else {
+						address = "";
+					}
+
+					if (this.venue.rating) {
+						rating = '<span class="rating">'+this.venue.rating+'</span>';
+					}
+
+					appendeddatahtml = '<div class="item venue"><span>'+this.venue.name + '</span></h2></div>';
+					$("#venues").append(appendeddatahtml);
+
+					console.log(appendeddatahtml);
+
+				});
+                /*
                 if(result.status = "OK"){                    
                     try {
                         address.lat = result.results[0].geometry.location.lat;
@@ -94,35 +127,51 @@ function TaskListViewModel() {
                     } catch(err) {
                         address = null;
                     }    
-                }    
+                }
+                */
             }
         });      
     };
 
+
     /** Show place that clicked */
-    self.showPlace = function(data) {          
+    self.showPlace = function(data) {
         var position = {};
         var place_id = '';
+        var name ='';
+        var description='';
+
         ko.utils.arrayFilter(self.neighborhoods(), function(item) {
             if(data == item){  
-                place_id =  item.place_id().toString();             
-                position = {lat: parseFloat(item.lat().toString()), lng: parseFloat(item.lng().toString())};                
+                place_id =  item.place_id().toString();
+                name =  item.name().toString();
+                description =  item.description().toString();
+                position = {lat: parseFloat(item.lat().toString()), lng: parseFloat(item.lng().toString())};
                 return;
             }
         });              
 
         var bounds = new google.maps.LatLngBounds();
-        
         for (var j = 0; j < markers.length; j++) {            
                 if(markers[j].id == place_id){                
-                    map.setZoom(8);       
+                    map.setZoom(11);
+                    markers[j].setAnimation(google.maps.Animation.BOUNCE);
                     markers[j].setMap(map);
                     bounds.extend(markers[j].position);
                }
         }
-        
-        map.fitBounds(bounds);    
-        map.setCenter(position);        
+
+        var contentString = '<div class="card">'+
+                        ' <p class="card-head" >'+ name + '</p>'+
+                        ' <p>'+ description+ '</p>'+
+                        '</div>';
+
+        var infoWindow = new google.maps.InfoWindow({content: contentString});
+        infoWindow.setPosition(position);
+        infoWindow.open(map);
+
+        map.fitBounds(bounds);
+        map.setCenter(position);
     };
 
 	$.getJSON( "/neighborhoods", function(data) {           
@@ -131,36 +180,53 @@ function TaskListViewModel() {
 	    });                   
         self.neighborhoods(neighborhoods);        
     })
-    .done(function() {                        
-        setMarkers(map, self.neighborhoods());        
+    .done(function() {
+        setMarkers(map, self.neighborhoods());
         showListings();
-    })    
+    })
     .fail(function() {
         console.log( "error" );
     });
- 
-    self.clearFilter = function(){
-        self.filter("");
-        self.filteredItems();
+
+    /* show all markers when filter is blank*/
+    ko.bindingHandlers.showAllMarkersWhenClearFilter= {
+        update: function(element, valueAccessor, allBindingsAccessor, viewModel) {
+            var value = allBindingsAccessor().value();
+            if(!value){
+                self.itemsFilter = ko.utils.arrayFilter(self.neighborhoods(), function(item, index) {
+                    positions.push({'place_id':item.place_id().toString()});
+                    return true;
+                });
+
+                if(self.itemsFilter.length > 0){
+                    showListings();
+                }
+            }
+        }
     };
 
-    /**Filter on list by name that place what you looking for */
+    self.clearFilter = function(){
+        self.filter("");
+        showListings();
+        map.setZoom(10);
+    };
+
+    /**Filter on list by name that place what you looking for*/
 	self.filteredItems = ko.computed(function () {
         positions =[];
-        var filter = self.filter();            
-        if (!filter) {      
-                                 
+        var filter = self.filter();
+        if (!filter) {
             return self.neighborhoods();
         }else{
             
-            self.itemsFilter = ko.utils.arrayFilter(self.neighborhoods(), function(item, index) {                 
-                var neighborhood = item.name().toString().toUpperCase().replace(/[&\/\\#,+()$~%.'":*?<>{}]/g, ''); 
+            self.itemsFilter = ko.utils.arrayFilter(self.neighborhoods(), function(item, index) {
+                var neighborhood = item.name().toString().toUpperCase().replace(/[&\/\\#,+()$~%.'":*?<>{}]/g, '');
                 positions.push({'place_id':item.place_id().toString()});
                 return neighborhood.indexOf(filter.toUpperCase()) > -1;
-            }); 
-            showListings();                        
-            return self.itemsFilter;                  
-        }    
+            });
+            showListings();
+            return self.itemsFilter;
+        }
     });
 
     self.save = function() {          
@@ -265,11 +331,11 @@ function showMakerFromFindPlace(address){
     map.panTo( address.location ); 
 }
 
-function initMap(){        
+function initApp(){
 	map = new google.maps.Map($('#map')[0], {
           zoom: 8,
           center: {lat: -23.550520, lng: -46.633309}
-    });   
+    });
 }
 
 // This function will loop through the markers array and display them all.

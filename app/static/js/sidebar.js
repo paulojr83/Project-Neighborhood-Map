@@ -1,24 +1,43 @@
-const sidebarBox = document.querySelector('#box'),
-		sidebarBtn = document.querySelector('#btn'),
-		pageWrapper = document.querySelector('#page-wrapper');
+const sidebarBoxLeft = document.querySelector('#box-left'),
+		sidebarBtnLeft = document.querySelector('#btn-left'),
+		pageWrapper = document.querySelector('#page-wrapper'),
+		sidebarBoxRight = document.querySelector('#box-right'),
+		sidebarBtnRight = document.querySelector('#btn-right');
 
-sidebarBtn.addEventListener('click', event => {
-		sidebarBtn.classList.toggle('active');
-		sidebarBox.classList.toggle('active');
+
+sidebarBtnLeft.addEventListener('click', event => {
+		sidebarBtnLeft.classList.toggle('active');
+		sidebarBoxLeft.classList.toggle('active');
 });
 
-pageWrapper.addEventListener('click', event => {
+sidebarBtnRight.addEventListener('click', event => {
+		sidebarBtnRight.classList.toggle('active');
+		sidebarBoxRight.classList.toggle('active');
+});
 
-		if (sidebarBox.classList.contains('active')) {
-				sidebarBtn.classList.remove('active');
-				sidebarBox.classList.remove('active');
-		}
+
+pageWrapper.addEventListener('click', event => {
+    if (sidebarBtnLeft.classList.contains('active')) {
+            sidebarBtnLeft.classList.remove('active');
+            sidebarBoxLeft.classList.remove('active');
+    }
+
+    if (sidebarBtnRight.classList.contains('active')) {
+            sidebarBtnRight.classList.remove('active');
+            sidebarBoxRight.classList.remove('active');
+    }
+
 });
 
 window.addEventListener('keydown', event => {
 
-		if (sidebarBox.classList.contains('active') && event.keyCode === 27) {
-				sidebarBtn.classList.remove('active');
-				sidebarBox.classList.remove('active');
-		}
+    if (sidebarBtnLeft.classList.contains('active') && event.keyCode === 27) {
+            sidebarBtnLeft.classList.remove('active');
+            sidebarBoxLeft.classList.remove('active');
+    }
+
+    if (sidebarBtnRight.classList.contains('active') && event.keyCode === 27) {
+            sidebarBtnRight.classList.remove('active');
+            sidebarBoxRight.classList.remove('active');
+    }
 });

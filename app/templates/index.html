@@ -12,7 +12,7 @@
       <!--styles for mobile or/and browsers smaller than 550px -->
       <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/main.550.css') }}"  media="screen and (max-width: 550px)" />
       <!--styles for mobile  or/and browsers smaller than 700px -->
-      <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/main.css') }}" media="screen and (max-width: 700px)" />
+      <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/main.700.css') }}" media="screen and (max-width: 700px)" />
       
   </head>
 <body>
@@ -38,43 +38,50 @@
             <div class="col-12">
               <div id="map"></div>
             </div>
+               <div class="col-6">
+                  <form data-bind="submit: addAddress">
+                        <label>Name</label>
+                        <input type="text" data-bind="value: name">
 
-                  <div class="col-6">
+                        <label>Description</label>
+                        <textarea  rows="3" data-bind="value: description" readonly></textarea>
 
-              <form data-bind="submit: addAddress">
-                <label>Name</label>
-                <input type="text" data-bind="value: name">
+                        <label class="hidden">Location
+                          <input type="text" data-bind="value: lat" readonly>
+                          <input type="text" data-bind="value: lng" readonly>
+                        </label>
 
-                <label>Description</label>
-                <textarea  rows="3" data-bind="value: description" readonly></textarea>
+                        <label class="hidden">Place id
+                          <input type="text" data-bind="value: place_id" readonly>
+                        </label>
 
-                <label class="hidden">Location
-                  <input type="text" data-bind="value: lat" readonly>
-                  <input type="text" data-bind="value: lng" readonly>
-                </label>
+                        <button type="submit" class="button save">Save</button>
+                   </form>
+                </div>
+             </div>
 
-                <label class="hidden">Place id
-                  <input type="text" data-bind="value: place_id" readonly>
-                </label>
+          </div>
+    </div>
 
-                <button type="submit" class="button save">Save</button>
-              </form>
-                  </div>
-              </div>
+    <div id="btn-left">
+        <div class="top"></div>
+        <div class="middle"></div>
+        <div class="bottom"></div>
+    </div>
 
+    <div id="btn-right" class="hidder">
+        <div class="top"></div>
+        <div class="middle"></div>
+        <div class="bottom"></div>
+    </div>
+
+    <div id="box-right">
+        <div class="venues-container" data-bind="foreach: venues, visible: venues().length > 0">
+            <div class="item venue"><div class="show-in-map" data-bind="click: $parent.showInMap"></div><span data-bind="text: name"></span></h2></div>
         </div>
     </div>
 
-    <div id="btn">
-            <div id='top'></div>
-            <div id='middle'></div>
-            <div id='bottom'></div>
-    </div>
-
-    <div id="venues">
-    </div>
-
-    <div id="box" >
+    <div id="box-left" >
         <div>
           <h1 style="text-align: center;position: relative;top: 85px;">Search</h1>
           <form class="inputbox">

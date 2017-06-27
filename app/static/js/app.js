@@ -57,11 +57,11 @@ function TaskListViewModel() {
 
     /** Find all address saved */
     self.findPlace = function(){
-
+        self.venues([]);
         $.ajax({
             type : 'GET',
             url: "https://api.foursquare.com/v2/venues/explore?ll="+lat+","+lng+
-                        "&oauth_token=YOUR_OAUTH_TOKEN&v=20170626&query="+self.address()+"",
+                        "&oauth_token=OAUTH_TOKEN&v=20170626&query="+self.address()+"",
             success : function(result) {
                 $("#venues").removeClass('hidder');
                 var dataobj = result.response.groups[0].items;

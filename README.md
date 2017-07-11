@@ -2,19 +2,12 @@
  The neighborhood map application is complex enough and incorporates a variety of data points that it can easily become unwieldy to manage. There are a number of frameworks, libraries and APIs available to make this process more manageable and many employers are looking for specific skills in using these packages.
 
 #### The neighborhood Map:
-1. You need [Python](https://www.python.org/downloads/), and [pip](https://pip.pypa.io/en/stable/installing/).
+1. You need [Python 2.7.13](https://www.python.org/downloads/), and [pip](https://pip.pypa.io/en/stable/installing/).
 2. git clone https://github.com/paulojr83/Project-Neighborhood-Map.git neighrhood
-3. cd neighrhood\app
-4. python app.py
-
-#### Framework used, following links below:
-1. [Sqlalchemy](http://docs.sqlalchemy.org/en/latest/core/schema.html)
-2. [Flask Templates](http://flask.pocoo.org/)   
-3. [Knockoutjs](http://knockoutjs.com/documentation/introduction.html)
-
-#### Dependency you need to install
-In command line: 
-> pip install 
+3. cd neighrhood
+4. Dependency you need to install
+  In command line: 
+> pip install requirements
 > * click
 > * db
 > * Flask
@@ -33,7 +26,19 @@ In command line:
 > * jsonify
 > * _app_ctx_stack
 > * sqlite3
+5. In command line: python project_folder/app/app.py
 
+
+#### Framework used, following links below:
+1. [Sqlalchemy](http://docs.sqlalchemy.org/en/latest/core/schema.html)
+2. [Flask Templates](http://flask.pocoo.org/)   
+3. [Knockoutjs](http://knockoutjs.com/documentation/introduction.html)
+4. [Google Maps script need an API key](https://developers.google.com/maps/documentation/javascript/get-api-key)
+5. [Foursquare](https://developer.foursquare.com/)
+
+#### Sweet Alert
+A beautiful replacement for javascript's "alert"
+[Sweet Alert](http://t4t5.github.io/sweetalert/)
 
 #### First view of app
 ![alt text](https://raw.githubusercontent.com/paulojr83/Project-Neighborhood-Map/master/app/static/images/1.PNG "")

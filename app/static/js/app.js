@@ -12,10 +12,7 @@ var newstr = "";
 
 $(document).ready(function () {
    navigator.geolocation.getCurrentPosition(getLocation);
-   ko.applyBindings(viewModel);
 });
-
-
 
 function Neighborhood(data) {
     this.id          = ko.observable(data.id);
@@ -61,19 +58,26 @@ function TaskListViewModel() {
         $.ajax({
             type : 'GET',
             url: "https://api.foursquare.com/v2/venues/explore?ll="+lat+","+lng+
-                        "&oauth_token=OAUTH_TOKEN&v=20170626&query="+self.address()+"",
-            success : function(result) {
+                        "&oauth_token=20RNUANVYKUONUGZKDGTUCXLV4LZEFPH5FPHN4X3HVMYOKKG&v=20170626&query="+self.address()+"",
+            }).done(function(result) {
                 $("#venues").removeClass('hidder');
                 var dataobj = result.response.groups[0].items;
-                $.each( dataobj, function() {
-                    if(this.venue.location.address){
-                        self.venues.push(this.venue);
-                    }
-				});
-                $("#btn-right").removeClass("hidder");
-				$("#btn-right").addClass("active");
-				$("#box-right").addClass("active");
-            }
+                if(dataobj.length > 0){
+                    $.each( dataobj, function() {
+                        if(this.venue.location.address){
+                            self.venues.push(this.venue);
+                        }
+                    });
+                    $("#btn-right").removeClass("hidder");
+                    $("#btn-right").addClass("active");
+                    $("#box-right").addClass("active");
+                }else{
+                    sweetAlert("Oops...", "That place not found!", "error");
+                    return;
+                }
+            }).fail(function() {
+                sweetAlert("Oops...", "Something went wrong!", "error");
+                return;
         });
     };
 
@@ -94,9 +98,8 @@ function TaskListViewModel() {
                 sensor : false
             },
             async : false,
-            success : function(result) {
-
-                if(result.status = "OK"){
+            }).done(function(result) {
+                if(result.status === "OK"){
                     try {
                         address.lat = result.results[0].geometry.location.lat;
                         address.lng = result.results[0].geometry.location.lng;
@@ -130,8 +133,12 @@ function TaskListViewModel() {
                         address = null;
                     }
                 }
-            }
-        });
+                $("#btn-right").removeClass("active");
+                $("#box-right").removeClass("active");
+            }).fail(function() {
+                sweetAlert("Oops...", "Something went wrong!", "error");
+                return;
+            });
     };
 
     /** Show place that clicked */
@@ -153,22 +160,27 @@ function TaskListViewModel() {
 
         var bounds = new google.maps.LatLngBounds();
         for (var j = 0; j < markers.length; j++) {
-                if(markers[j].id == place_id){
-                    map.setZoom(11);
-                    markers[j].setAnimation(google.maps.Animation.BOUNCE);
-                    markers[j].setMap(map);
-                    bounds.extend(markers[j].position);
-               }
+            if(markers[j].id == place_id){
+                map.setZoom(11);
+                markers[j].setAnimation(google.maps.Animation.BOUNCE);
+                markers[j].setMap(map);
+                bounds.extend(markers[j].position);
+           }else{
+                markers[j].setAnimation(null);
+           }
         }
 
         var contentString = '<div class="card">'+
                         ' <p class="card-head" >'+ name + '</p>'+
                         ' <p>'+ description+ '</p>'+
                         '</div>';
-
         var infoWindow = new google.maps.InfoWindow({content: contentString});
-        infoWindow.setPosition(position);
-        infoWindow.open(map);
+        if(currInfowindow){
+            currInfowindow.close();
+        }
+        currInfowindow = infoWindow;
+        currInfowindow.setPosition(position);
+        currInfowindow.open(map);
 
         map.fitBounds(bounds);
         map.setCenter(position);
@@ -185,7 +197,7 @@ function TaskListViewModel() {
         showListings();
     })
     .fail(function() {
-        console.log( "error" );
+        sweetAlert("Oops...", "Something went wrong!", "error");
     });
 
     /* show all markers when filter is blank*/
@@ -241,8 +253,7 @@ function TaskListViewModel() {
             'lng': self.lng(),
             'place_id': self.place_id()
             }),
-            success: function(data) {
-                console.log("Pushing to tasks array");
+        }).done(function(data) {
                 var neighborhood = new Neighborhood({ id: data.id, name: data.name,
                     description: data.description, lat:data.lat, lng:data.lng, place_id: data.place_id});
                 self.neighborhoods.push(neighborhood);
@@ -252,12 +263,11 @@ function TaskListViewModel() {
                 }
                 addMarker(position, map, data.name,data.description, data.place_id);
 
+            swal("Good job!", "New place was saved!", "success");
             return;
-            },
-            error: function() {
-                alert('Error: Cannot save that place!');
-                return;
-            }
+         }).fail(function() {
+            sweetAlert("Oops...", "Something went wrong!", "error");
+            return;
         });
 
     };
@@ -267,7 +277,6 @@ function TaskListViewModel() {
 function showMakerFromFindPlace(address, data){
     viewModel.name(data.name);
     viewModel.description(data.location.address);
-
     if(marker){
         marker.setMap(null);
     }
@@ -279,6 +288,10 @@ function showMakerFromFindPlace(address, data){
     });
 
     marker.addListener('click', function() {
+        for (var j = 0; j < markers.length; j++) {
+            markers[j].setAnimation(null);
+        }
+
         if (marker.getAnimation() !== null) {
             marker.setAnimation(null);
         } else {
@@ -293,8 +306,11 @@ function showMakerFromFindPlace(address, data){
                         '</div>';
 
     var infoWindow = new google.maps.InfoWindow({content: contentString});
-
-    infoWindow.open(map, marker);
+    if(currInfowindow){
+       currInfowindow.close();
+    }
+    currInfowindow = infoWindow;
+    currInfowindow.open(map, marker);
     google.maps.event.addListener(marker, 'dragend', function() {
         geocoder.geocode({latLng: marker.getPosition()}, function(responses) {
             viewModel.lat(marker.getPosition().lat());
@@ -314,21 +330,21 @@ function showMakerFromFindPlace(address, data){
             viewModel.place_id(responses[0].place_id);
             viewModel.description(responses[0].formatted_address);
             if (responses && responses.length > 0) {
-                infoWindow.setContent(
+                currInfowindow.setContent(
                     '<div class="card">'+
                     ' <p class="card-head" >'+ name + '</p>'+
                     ' <p>'+ responses[0].formatted_address+ '</p>'+
                     '</div>');
-                infoWindow.open(map, marker);
+                currInfowindow.open(map, marker);
             } else {
-                alert('Error: Google Maps could not determine the address of this location.');
+                sweetAlert("Oops...", "Google Maps could not determine the address of this location.", "error");
             }
         });
         map.panTo(marker.getPosition());
     });
 
     google.maps.event.addListener(marker, 'dragstart', function() {
-        infoWindow.close(map, marker);
+        currInfowindow.close(map, marker);
     });
 
     map.setCenter(address.location);
@@ -341,6 +357,8 @@ function initApp(){
           zoom: 8,
           center: {lat: -23.550520, lng: -46.633309}
     });
+
+    ko.applyBindings(viewModel);
 }
 
 // This function will loop through the markers array and display them all.
@@ -401,6 +419,10 @@ function addMarker(position, map, name, description,_id) {
 
     markers.push(marker);
     marker.addListener('click', function() {
+        for (var i = 0; i < markers.length; i++) {
+          markers[i].setAnimation(null);
+        }
+
         if(currInfowindow){
             currInfowindow.close();
         }
@@ -411,7 +433,7 @@ function addMarker(position, map, name, description,_id) {
         }
 
         currInfowindow = infowindow;
-        infowindow.open(map, marker);
+        currInfowindow.open(map, marker);
     });
 
 }
@@ -419,6 +441,10 @@ function addMarker(position, map, name, description,_id) {
 function getLocation(location) {
     lat = location.coords.latitude;
     lng = location.coords.longitude;
+}
+
+function googleError(){
+    sweetAlert("Oops...", "Something went wrong!", "error");
 }
 
 var viewModel = new TaskListViewModel();

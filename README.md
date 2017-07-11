@@ -36,7 +36,9 @@
 4. [Google Maps script need an API key](https://developers.google.com/maps/documentation/javascript/get-api-key)
 5. [Foursquare](https://developer.foursquare.com/)
 
-
+#### Sweet Alert
+A beautiful replacement for javascript's "alert"
+[Sweet Alert](http://t4t5.github.io/sweetalert/)
 
 #### First view of app
 ![alt text](https://raw.githubusercontent.com/paulojr83/Project-Neighborhood-Map/master/app/static/images/1.PNG "")

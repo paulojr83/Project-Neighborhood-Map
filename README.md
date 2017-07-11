@@ -4,17 +4,9 @@
 #### The neighborhood Map:
 1. You need [Python 2.7.13](https://www.python.org/downloads/), and [pip](https://pip.pypa.io/en/stable/installing/).
 2. git clone https://github.com/paulojr83/Project-Neighborhood-Map.git neighrhood
-3. cd neighrhood\app
-4. python app.py
-
-#### Framework used, following links below:
-1. [Sqlalchemy](http://docs.sqlalchemy.org/en/latest/core/schema.html)
-2. [Flask Templates](http://flask.pocoo.org/)   
-3. [Knockoutjs](http://knockoutjs.com/documentation/introduction.html)
-4. [Google Maps script need an API key](https://developers.google.com/maps/documentation/javascript/get-api-key)
-
-#### Dependency you need to install
-In command line: 
+3. cd neighrhood
+4. Dependency you need to install
+  In command line: 
 > pip install requirements
 > * click
 > * db
@@ -34,6 +26,16 @@ In command line:
 > * jsonify
 > * _app_ctx_stack
 > * sqlite3
+5. In command line: python project_folder/app/app.py
+
+
+#### Framework used, following links below:
+1. [Sqlalchemy](http://docs.sqlalchemy.org/en/latest/core/schema.html)
+2. [Flask Templates](http://flask.pocoo.org/)   
+3. [Knockoutjs](http://knockoutjs.com/documentation/introduction.html)
+4. [Google Maps script need an API key](https://developers.google.com/maps/documentation/javascript/get-api-key)
+
+
 
 
 #### First view of app

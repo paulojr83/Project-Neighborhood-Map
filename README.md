@@ -34,7 +34,7 @@
 2. [Flask Templates](http://flask.pocoo.org/)   
 3. [Knockoutjs](http://knockoutjs.com/documentation/introduction.html)
 4. [Google Maps script need an API key](https://developers.google.com/maps/documentation/javascript/get-api-key)
-
+5. [Foursquare](https://developer.foursquare.com/)
 
 
 

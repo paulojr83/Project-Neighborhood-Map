@@ -1,14 +1,25 @@
-//global for map
+/**
+ * @author Paulo Porto
+ * @required knockout.js (http://knockoutjs.com/downloads/index.html)
+ * @required jquery.min (https://jquery.com/download/)
+ * @required sweetalert.min (http://t4t5.github.io/sweetalert/)
+ */
+
+//map var global declaration
 var map;
-var tasks;
+//object global to set infowindow on map
 var address = {};
+//variable to show current infowindow on map
 var currInfowindow =false;
+//map marker object to map
 var marker;
+//list of marker on map
 var markers = [];
 var geocoder;
+//array list of positions marker in the map
 var positions = [];
-var appendeddatahtml = "";
-var newstr = "";
+
+var viewModel =null;
 
 $(document).ready(function () {
    navigator.geolocation.getCurrentPosition(getLocation);
@@ -159,9 +170,14 @@ function TaskListViewModel() {
         });
 
         var bounds = new google.maps.LatLngBounds();
+        //remove all animation
+        for (var j = 0; j < markers.length; j++) {
+            markers[j].setAnimation(null);
+        }
+
         for (var j = 0; j < markers.length; j++) {
             if(markers[j].id == place_id){
-                map.setZoom(11);
+                map.setZoom(10);
                 markers[j].setAnimation(google.maps.Animation.BOUNCE);
                 markers[j].setMap(map);
                 bounds.extend(markers[j].position);
@@ -174,10 +190,11 @@ function TaskListViewModel() {
                         ' <p class="card-head" >'+ name + '</p>'+
                         ' <p>'+ description+ '</p>'+
                         '</div>';
-        var infoWindow = new google.maps.InfoWindow({content: contentString});
+        var infoWindow = new google.maps.InfoWindow({content: contentString, pixelOffset: new google.maps.Size(0,-40)});
         if(currInfowindow){
             currInfowindow.close();
         }
+
         currInfowindow = infoWindow;
         currInfowindow.setPosition(position);
         currInfowindow.open(map);
@@ -357,8 +374,12 @@ function initApp(){
           zoom: 8,
           center: {lat: -23.550520, lng: -46.633309}
     });
-
+    viewModel = new TaskListViewModel();
     ko.applyBindings(viewModel);
+}
+
+function googleError(){
+    sweetAlert("Oops...", "Something went wrong!", "error");
 }
 
 // This function will loop through the markers array and display them all.
@@ -443,8 +464,3 @@ function getLocation(location) {
     lng = location.coords.longitude;
 }
 
-function googleError(){
-    sweetAlert("Oops...", "Something went wrong!", "error");
-}
-
-var viewModel = new TaskListViewModel();

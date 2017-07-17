@@ -80,7 +80,7 @@
     <div id="box-right">
         <div class="venues-container" data-bind="foreach: venues, visible: venues().length > 0">
             <div class="item venue">
-                <img class="show-in-map" src="{{ url_for('static', filename='img/blue-marketing.png') }}" data-bind="click: $parent.showInMap" >
+                <img class="show-in-map" src="{{ url_for('static', filename='img/blue-marketing.png') }}" data-bind="click: $parent.showInMap" alt="Show on the map">
                 <span data-bind="text: name"></span>
             </div>
         </div>
@@ -106,6 +106,7 @@
   <script src="{{ url_for('static', filename='js/app.js') }}"></script>
   <script src="{{ url_for('static', filename='js/sidebar.js') }}"></script>
   <script src="{{ url_for('static', filename='js/sweetalert.min.js') }}"></script>
-  <script async defer src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry&key=AIzaSyCdqkttXHFtZLwrNlI_uwSyYofpNRLMsJ0&callback=initApp"> </script>
+  <script async defer onerror="googleError()" src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry&key=AIzaSyCdqkttXHFtZLwrNlI_uwSyYofpNRLMsJ0&callback=initApp"
+          type="text/javascript"> </script>
 </body>
 </html>

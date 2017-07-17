@@ -7,7 +7,7 @@
 3. cd neighrhood
 4. Dependency you need to install
   In command line: 
-> pip install requirements
+> pip install -r requirements
 > * click
 > * db
 > * Flask

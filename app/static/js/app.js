@@ -69,7 +69,7 @@ function TaskListViewModel() {
         $.ajax({
             type : 'GET',
             url: "https://api.foursquare.com/v2/venues/explore?ll="+lat+","+lng+
-                        "&oauth_token=20RNUANVYKUONUGZKDGTUCXLV4LZEFPH5FPHN4X3HVMYOKKG&v=20170626&query="+self.address()+"",
+                        "&oauth_token=OAUTH&v=20170626&query="+self.address()+"",
             }).done(function(result) {
                 $("#venues").removeClass('hidder');
                 var dataobj = result.response.groups[0].items;

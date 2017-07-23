@@ -460,7 +460,12 @@ function addMarker(position, map, name, description,_id) {
 }
 /*Get current location*/
 function getLocation(location) {
-    lat = location.coords.latitude;
-    lng = location.coords.longitude;
+    if(location){
+	lat = location.coords.latitude;
+    	lng = location.coords.longitude;
+    }else{
+	lat = -23.550520;
+	lng = -46.633309;
+    }
 }
 

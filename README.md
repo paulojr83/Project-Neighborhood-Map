@@ -31,10 +31,10 @@
 
 #### Framework used, following links below:
 1. [Sqlalchemy](http://docs.sqlalchemy.org/en/latest/core/schema.html)
-2. [Flask Templates](http://flask.pocoo.org/)   
-3. [Knockoutjs](http://knockoutjs.com/documentation/introduction.html)
+2. [Flask Templates](http://flask.pocoo.org/) 
+3. [Knockoutjs introduction](http://knockoutjs.com/documentation/introduction.html)
 4. [Google Maps script and how to get you API key](https://developers.google.com/maps/documentation/javascript/get-api-key)
-5. [Foursquare ](https://developer.foursquare.com/) , link for to get [oauth_token](https://developer.foursquare.com/docs/explore#req=users/self)
+5. [Foursquare ](https://developer.foursquare.com/) , link for to get after login on Foursquare for developer [oauth_token](https://developer.foursquare.com/docs/explore#req=users/self)
 
 #### Sweet Alert
 A beautiful replacement for javascript's "alert"
